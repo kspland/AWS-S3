@@ -12,22 +12,27 @@ d5 = today.strftime("%#m_%d_%Y")
 
 s3_client = boto3.client('s3')
 
-# S3 Test Bucket location
-test_bucket = 'lsudatatransfer\importtest\demographic'
+# S3 Bucket
+bucket = 'lsudatatransfer'
 
-# S3 Production Bucket location
-prod_bucket = 'lsudatatransfer\import\demographic'
-
-# S3  file path on RHHMS004 for test Demographic file location
-test_demo_path = 'E:\StarShare\Test_Demographic\StarRezInbound'
-
-# S3 file path on RHHMS004 for production Demographic file location
-prod_demo_path = 'E:\StarShare\Demographic\StarRezInbound'
 
 # Demographic file name is date in format m_dd_YYYY
-#  create the file name by running on the date, putting in format and adding .txt
-# for the file type
-file =  d5 + '.txt'
+# create the file name getting the date code executes and put in format add .txt for file type
+# Example file name 3_26_2024   or 6_2_2024
+file =   d5 + '.txt'
+
+# S3  file path on RHHMS004 for test Demographic file location
+test_demo_path = 'E:\\StarShare\\Test_Demographic\\StarRezInbound\\' + file
+
+# S3 file path on RHHMS004 for production Demographic file location
+#prod_demo_path = 'E:\\StarShare\\Demographic\\StarRezInbound\\' + file
+
+
+# To access the folder within the bucket place add the folder path to the file name
+filebase = 'import/demographic/' + file
+
+# used to execute during testingresponse = s3_client.upload_file(test_demo_path,test_bucket,file)
 
 # create and execute the response
-response = s3_client.upload_file(test_demo_path,test_bucket,file)
+
+response = s3_client.upload_file(test_demo_path,bucket,filebase)
